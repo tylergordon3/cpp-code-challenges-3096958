@@ -15,16 +15,29 @@
 //           n: The size of the array.
 // Returns: A boolean value: True on success, false otherwise.
 bool sort_array(int *arr, int n){
+    if (arr == NULL)
+        return false;
+    if (n < 2)
+        return true;
+    bool flag;
+    for (int idx = 0; idx < n - 1; idx++) {
+        flag = false;
+        for (int j = 0; j < n - idx - 1; j++) {
+            if (arr[j] < arr[j+1]) {
+                std::swap(arr[j], arr[j+1]);
+                flag = true;
+            }
+        }
 
-    // Write your code here
+    }
 
-    return false;
+    return true;
 }
 
 // Main function
 int main(){
     // The following array will be treated as an array of length len. 
-    const int len = 7; // Don't exceed the length of the array below!
+    const int len = 10; // Don't exceed the length of the array below!
     int array[] = {2, 9, 4, 3, 5, 1, 6, 8, 0, 7};
 
     // Print the original array

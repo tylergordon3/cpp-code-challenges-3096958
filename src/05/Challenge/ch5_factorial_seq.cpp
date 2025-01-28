@@ -12,13 +12,13 @@
 // print_factorials()
 // Summary: This function receives a (small) positive integer n and prints out a sequence from 0! through n!.
 // Arguments:
-//           n: The argument of the last factorial to print.
+//           n: The last factorial to print.
 // Returns: n!, the last calculated factorial.
 int print_factorials(int n){
-    
-    // Write your code here
-
-    return 0;
+    int fact;
+    fact = n == 0 ? 1 : n * print_factorials(n - 1);
+    std::cout << fact << " ";
+    return fact;
 }
 
 // Main function
