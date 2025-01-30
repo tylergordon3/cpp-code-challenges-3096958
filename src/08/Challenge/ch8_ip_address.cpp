@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <regex>
 
 // is_valid_ip()
 // Summary: This function validates an IP address.
@@ -18,8 +19,8 @@
 bool is_valid_ip(std::string ip){
 
     // Write your code here
-
-    return false;
+    std::regex ipCheck("(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])");
+    return std::regex_match(ip, ipCheck);
 }
 
 // Main function
