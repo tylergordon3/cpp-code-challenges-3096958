@@ -17,10 +17,15 @@
 int main(){
     std::fstream file ("names.csv", std::ios::in);
     // Read the CSV file.
+    std::string line;
+    std::vector<std::string> names;
     if(file.is_open()){
-
         // Write your code here
-    
+        while(file) {
+            std::getline (file,line,',');
+            names.push_back(line);
+            
+        }
         file.close();
     }
     else{
@@ -29,7 +34,9 @@ int main(){
     }
 
     // Write your code here
-
+    for (std::string i : names)
+        std::cout << i << " " << std::endl;
+    return 0;
     std::cout << "No relatives found.\n\n" << std::flush;    
     return 0;
 }
