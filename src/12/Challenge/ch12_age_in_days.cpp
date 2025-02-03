@@ -26,6 +26,7 @@ int main(){
         birth_m = 12;
 
     // Write your code here
+    age = ((2025-birth_y)*365) + (birth_m*30) + birth_d;
 
     if(age < 43830)
         std::cout << "You are " << age << " days old.";
