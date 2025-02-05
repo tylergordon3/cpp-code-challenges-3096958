@@ -27,12 +27,50 @@ int main(){
 
     std::string try_again;
     std::getline(std::cin, try_again);
+    std::srand((unsigned)(time(0)));
+    std::rand();
     do{
-
         // Write your code here
+        std::string word;
+        int rand_word = std::rand()%10;
+        std::chrono::seconds delay(4 + std::rand() % 7);
+        
+        auto start = std::chrono::steady_clock::now();
+        auto end = start + delay;
+        
+        std::cout << "\n\n             Wait for it.........                         " << std::flush;
+        
+            do{
+        // Wait for the random delay to catch the player off guard.
+        }while(end > std::chrono::steady_clock::now());
+
+        std::cout << "Type: " << words[rand_word] << " Go! " << std::flush;
+        start = std::chrono::steady_clock::now();
+        std::getline(std::cin,word);
+        end = std::chrono::steady_clock::now();
+        
+        std::transform(word.begin(),word.end(),word.begin(),toupper);
+        double elapsed_seconds = (end-start).count()/1e9;
+        std::cout << "\n";
+
+        if (elapsed_seconds > 2.0) {
+            if (word.compare(words[rand_word]) == 0) {
+                std::cout << "You got the word right but it took: " << elapsed_seconds << " seconds.";
+            } else {
+                std::cout << "Ouch, you got the word wrong and it took: " << elapsed_seconds << " seconds.";
+            }
+        } else {
+            if (word.compare(words[rand_word]) == 0) {
+                std::cout << "Congrats! You got it right and it only took " << elapsed_seconds << " seconds.";
+            } else {
+                std::cout << "Maybe slow down? You got the wrong word in: " << elapsed_seconds << " seconds.";
+            }
+        }
+        std::cout<<"\n\n";
 
         std::cout << "Try again? (Y/N): " << std::flush;
         std::getline(std::cin, try_again);
+
     }while(try_again[0]=='Y' || try_again[0]=='y');
     return 0;
 }

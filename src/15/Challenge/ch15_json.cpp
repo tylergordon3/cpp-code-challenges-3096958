@@ -23,13 +23,42 @@ int is_valid_JSON(std::string filename){
 
     std::fstream file (filename, std::ios::in);
     if(file.is_open()){
- 
         // Write your code here
-
+        std::stack<char> stack;
+        while(std::getline(file, line)) 
+            for(auto &ch : line) 
+                if(!quotes)
+                    switch(ch) {
+                        case '{':
+                        case '[':
+                            stack.push(ch);
+                            break;
+                        case '}':
+                        case ']':
+                            if (stack.empty()) {
+                                file.close();
+                                return 0;
+                            }
+                            if (stack.top() == (ch - 2))
+                                stack.pop();
+                            else
+                                return 0;
+                            break;
+                        case '"':
+                            quotes = true;
+                            break;
+                    }
+                else
+                    if(ch=='"')
+                        quotes = false;  
         file.close();
+        if (stack.empty() && !quotes)
+                return 1;
+        else
+            return 0;
     }
     else
-        return -1;
+        return -1;  
 }
 
 // JSON File Validation, main()

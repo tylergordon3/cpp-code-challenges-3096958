@@ -5,6 +5,11 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+#include <list>
+#include <random>
+
+using namespace std;
 
 // ask_for_move()
 // Summary: This function asks the user to make a move.
@@ -34,14 +39,50 @@ void ask_for_move(char game[][3], char mark){
 //           mark: The AI's mark: 'X' or 'O'.
 // Returns: Nothing.
 
-#define TWO_PLAYERS
-void make_move(char game[][3], char mark){ 
+//#define TWO_PLAYERS
+void make_move(char game[][3], char mark) { 
     #ifdef TWO_PLAYERS
     ask_for_move(game,mark);
     #else
     
     // Write your code here and comment out the definition of TWO_PLAYERS above
+    // Randomly choose an open space
+    std::vector<int> arr;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (game[i][j] == ' ') {
+                arr.push_back(i);
+                arr.push_back(j);
+            }
+        }
+    }
 
+    if (arr.size() == 2) {
+        game[arr[0]][arr[1]] = mark;
+        return;
+    }
+
+    for (int z = 0; z < arr.size(); z++) {
+        cout << arr[z] << " ";
+    }
+    int min = 0;
+    std::cout << std::endl << "min: " << min << std::endl;
+    int max = arr.size()/2;
+    std::cout << "max: " << max << std::endl;
+    std::cout << "size: " << arr.size() << std::endl;
+
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> distrib(min, max);
+    int randomValue = distrib(gen);
+
+    int x = randomValue * 2;
+    int y = (randomValue * 2) + 1;
+    std::cout<< "row index: " << x << std::endl;
+    std::cout<< "col index: " << y << std::endl;
+    game[arr[x]][arr[y]] = mark;    
+    std::cout<< "row: " << arr[x] << std::endl;
+    std::cout<< "col : " << arr[y] << std::endl;
     #endif
     return;
 }
@@ -56,10 +97,48 @@ void make_move(char game[][3], char mark){
 //                                  'O': O won.
 //                                  't': A tie.
 char game_state(char game[][3]){
-
+    int row_c0, row_c1, row_c2;
+    int r0_col, r1_col, r2_col;
     // Write your code here
+    // Horizontal/Vertical Win
+    // [*] [*] [*]          [] [*] []       [] []  [*]
+    // [*] []   []     ->  [*] [*] [*]  ->  [] []  [*]
+    // [*] [] []            [] [*] []      [*] [*] [*]
+    for (int idx = 0; idx < 3; idx++) {
+        row_c0 = game[idx][0];
+        row_c1 = game[idx][1];
+        row_c2 = game[idx][2];
+        r0_col = game[0][idx];
+        r1_col = game[1][idx];
+        r2_col = game[2][idx];
 
-    return 'a';
+        // Horizontal Win
+        if (row_c0 != ' ' && row_c0 == row_c1 && row_c1 == row_c2)
+            return row_c0;
+        // Vertical Win 
+        if (r0_col != ' ' && r0_col == r1_col && r1_col == r2_col)
+            return r0_col;
+    }
+
+    // [*] []  []       []  []  [*]    
+    // []  [*] []   ->  []  [*] [] 
+    // []  []  [*]      [*] []  []
+    // Diagonal Win
+    if (game[0][0] != ' ' && game[0][0] == game[1][1] && game[1][1] == game[2][2])
+        return game[0][0];
+    if (game[2][0] != ' ' && game[2][0] == game[1][1] && game[1][1] == game[0][2])
+        return game[2][0];
+
+    // Active Game
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) { 
+            if (game[i][j] == ' ') 
+                return 'a';
+        }
+    }
+    
+    // No victories, and no spaces empty
+    return 't';
 }
 
 // print_game()

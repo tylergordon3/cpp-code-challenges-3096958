@@ -21,7 +21,56 @@
 bool is_bitonic(const std::vector<int> &v){
     
     // Write your code here
+    int length = v.size();
+    if (length < 2) return true;
 
+    bool rising = false;
+    int i = 0;
+
+    // Pass through equal values
+    while (i < (length - 1) && v[i] == v[i + 1])
+        i++;
+    if (i == (length - 1))
+        return true;
+
+    // First segment 
+    if (v[i] < v[i + 1]) 
+        while (i < (length - 1) && v[i] <= v[i+1])
+            i++;
+    else
+        while (i < (length - 1) && v[i] >= v[i + 1])
+            i++;
+    if (i == (length - 1)) // Monotonic
+        return true; 
+
+    // Second segment
+    if (v[i] < v[i+1]) 
+        while (i < (length - 1) && v[i] <= v[i+1])
+            i++;
+    else
+        while (i < (length - 1) && v[i] >= v[i+1])
+            i++;
+    if (i == (length - 1))
+        return true; // Bitonic sequence
+
+    // Third Segment
+    if (v[i] < v[i + 1]) {
+        rising = true;
+        while (i < (length - 1) && v[i] <= v[i + 1])
+            i++;
+    } else {
+        rising = false;
+        while (i < (length - 1) && v[i] <= v[i + 1])
+            i++;
+    }
+    if (i < (length - 1))
+        return false; // Not bitonic
+
+    // 3 slopes? Check if the beginning
+    if (rising && v[i] <= v[0])
+        return true;
+    if (!rising && v[i] >= v[0])
+        return true;
     return false;
 }
 
